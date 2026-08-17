@@ -1,0 +1,50 @@
+// Sandbox para rodar agentes de IA com autonomia total, com spec-kit como harness.
+// Requer Docker Desktop ou OrbStack. Abrir com "Dev Containers: Reopen in Container".
+{
+  "name": "Sandbox do agente",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "TZ": "${localEnv:TZ:America/Sao_Paulo}",
+      "CLAUDE_CODE_VERSION": "latest"
+    }
+  },
+  // NET_ADMIN/NET_RAW: necessários para o firewall (iptables/ipset) do init-firewall.sh
+  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+  // Docker-in-Docker: o Postgres do `npm run services:up` sobe DENTRO do sandbox
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig",
+        "mhutchie.git-graph"
+      ]
+    }
+  },
+  // Boot como root: o entrypoint do Docker-in-Docker precisa iniciar o dockerd
+  // (o sudo do node é restrito ao firewall). Terminais e agente rodam como node.
+  "containerUser": "root",
+  "remoteUser": "node",
+  // Volumes nomeados: credenciais/config do Claude e histórico do shell sobrevivem a rebuilds
+  "mounts": [
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume"
+  ],
+  "containerEnv": {
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": [3000],
+  // Inicializa o spec-kit na primeira criação (idempotente) e instala deps se houver
+  "postCreateCommand": "bash .devcontainer/setup-speckit.sh",
+  // O firewall roda a cada start; sem ele o container fica com rede aberta
+  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
+  "waitFor": "postStartCommand"
+}
