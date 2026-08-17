@@ -1,0 +1,5 @@
+# Força LF independente do core.autocrlf de quem clona — scripts do
+# devcontainer rodam dentro do container Linux via shebang/bash e quebram
+# com CRLF (comum em checkouts no Windows).
+* text=auto eol=lf
+*.sh text eol=lf

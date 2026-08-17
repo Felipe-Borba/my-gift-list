@@ -1,0 +1,35 @@
+# Domínios com saída permitida pelo firewall do sandbox (init-firewall.sh).
+# Um domínio por linha; linhas em branco e "#" são ignorados.
+# Este arquivo é copiado para a imagem no build — mudanças exigem rebuild do container.
+# github.com/api.github.com/git não entram aqui: seus ranges oficiais vêm da
+# API api.github.com/meta. Já os domínios de conteúdo abaixo são servidos via
+# Fastly, fora desses ranges, e por isso precisam estar na lista.
+
+# GitHub — conteúdo dos repositórios (raw, ZIPs, releases, gists, LFS)
+raw.githubusercontent.com
+objects.githubusercontent.com
+codeload.github.com
+gist.githubusercontent.com
+media.githubusercontent.com
+
+# npm
+registry.npmjs.org
+
+# Anthropic / telemetria do Claude Code
+api.anthropic.com
+statsig.anthropic.com
+statsig.com
+sentry.io
+
+# Docker Hub (pull das imagens do compose)
+registry-1.docker.io
+auth.docker.io
+index.docker.io
+production.cloudflare.docker.com
+production.cloudfront.docker.com
+docker-images-prod.6aa30f8b08e16409b46e0173d6de2f56.r2.cloudflarestorage.com
+
+# VS Code (marketplace e updates)
+marketplace.visualstudio.com
+vscode.blob.core.windows.net
+update.code.visualstudio.com

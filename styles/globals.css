@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Design tokens — única fonte de cor/superfície; componentes usam apenas
+   classes derivadas destes tokens ou da escala neutra padrão do Tailwind. */
+@theme {
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+
+  --color-info: #2563eb;
+  --color-info-soft: #dbeafe;
+  --color-success: #16a34a;
+  --color-success-soft: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-soft: #fef3c7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-danger-hover: #b91c1c;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family:
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+  }
+}

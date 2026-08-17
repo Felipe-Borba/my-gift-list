@@ -1,0 +1,9 @@
+node_modules/
+.next/
+coverage/
+.husky/_
+
+.env
+.env*.local
+
+.DS_Store

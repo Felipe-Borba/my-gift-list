@@ -1,0 +1,8 @@
+.next
+
+# Spec Kit / agent scaffolding — not app code, not owned by this feature
+.claude
+.specify
+specs
+CLAUDE.md
+README.md
