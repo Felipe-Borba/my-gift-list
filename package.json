@@ -1,0 +1,65 @@
+{
+  "name": "imc-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema web para uma academia acompanhar a evolução do IMC dos seus alunos.",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "test": "npm run services:up && npm run services:wait:database && concurrently -n next,jest --hide next --kill-others --success command-jest \"next dev\" \"jest --runInBand --verbose\"",
+    "posttest": "npm run services:stop",
+    "test:watch": "jest --watchAll --runInBand --verbose",
+    "services:up": "docker compose -f infra/compose.yaml up -d",
+    "services:stop": "docker compose -f infra/compose.yaml stop",
+    "services:down": "docker compose -f infra/compose.yaml down",
+    "services:wait:database": "node infra/scripts/wait-for-postgres.js",
+    "migrations:create": "node-pg-migrate -m infra/migrations create",
+    "migrations:up": "node-pg-migrate -m infra/migrations --envPath .env.development up",
+    "lint:prettier:check": "prettier --check .",
+    "lint:prettier:fix": "prettier --write .",
+    "lint:eslint:check": "eslint . --max-warnings 0",
+    "prepare": "husky",
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "bcryptjs": "3.0.3",
+    "cookie": "2.0.1",
+    "dotenv": "17.4.2",
+    "next": "16.2.10",
+    "node-pg-migrate": "8.0.4",
+    "pg": "8.22.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "recharts": "3.9.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.0",
+    "@commitlint/config-conventional": "21.2.0",
+    "@eslint/css": "1.4.0",
+    "@eslint/js": "9.39.4",
+    "@eslint/json": "2.0.1",
+    "@eslint/markdown": "8.0.3",
+    "@faker-js/faker": "10.5.0",
+    "@tailwindcss/postcss": "4.3.2",
+    "commitizen": "4.3.2",
+    "concurrently": "10.0.3",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.10",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-jest": "29.15.4",
+    "globals": "17.7.0",
+    "husky": "9.1.7",
+    "jest": "30.4.2",
+    "prettier": "3.9.4",
+    "tailwindcss": "4.3.2",
+    "typescript": "6.0.3"
+  }
+}
